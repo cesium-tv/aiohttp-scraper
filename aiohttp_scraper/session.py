@@ -4,7 +4,7 @@ import random
 from typing import List, Optional
 
 from aiohttp import ClientSession, ClientResponse
-from aiohttp.hdrs import METH_GET
+from aiohttp.hdrs import METH_GET, METH_HEAD
 
 from aiohttp_scraper.exceptions import Unsuccessful, AllRetriesFailed
 from aiohttp_scraper.proxies import Proxies
@@ -73,6 +73,10 @@ class ScraperSession(ClientSession):
                         status_code=response.status,
                         proxy_url=kwargs["proxy"],
                     )
+
+                if kwargs.get('allow_redirects') == False and \
+                   300 <= respnse.status < 400:
+                    return response
 
                 if not 200 <= response.status < 300:
                     raise Unsuccessful(f"Status code is {response.status}")
