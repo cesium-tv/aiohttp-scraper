@@ -75,7 +75,7 @@ class ScraperSession(ClientSession):
                     )
 
                 if kwargs.get('allow_redirects') == False and \
-                   300 <= respnse.status < 400:
+                   300 <= response.status < 400:
                     return response
 
                 if not 200 <= response.status < 300:
